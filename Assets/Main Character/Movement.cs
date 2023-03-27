@@ -39,14 +39,11 @@ public class Movement : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        print(rb.velocity.y);
-
+        //Timers for buffer and coyote time
         lastGroundedTime -= Time.deltaTime;
         lastJumpTime -= Time.deltaTime;
 
-        print(lastJumpTime);
-        print(lastGroundedTime);
-
+        //Check to see if the character is grounded
         if (isGrounded())
         {
             lastGroundedTime = jumpCoyoteTime;
@@ -54,36 +51,13 @@ public class Movement : MonoBehaviour
             isGroundPounding = false;
         }
 
+        //Horizontal axis input 
         horizontal = Input.GetAxisRaw("Horizontal");
 
-        //Jump behaviour
+        //Jump buffer input
         if (Input.GetButtonDown("Jump"))
         {
-
             lastJumpTime = jumpBufferTime;
-
-        }
-
-        //Ground pound behaviour
-        if (!isGroundPounding && !isJumping && Input.GetKeyDown(KeyCode.S))
-        {
-            rb.AddForce(Vector2.down * groundPoundForce, ForceMode.Impulse);
-            isGroundPounding = true;
-            rb.velocity = new Vector2(rb.velocity.x * groundPoundHorizontalMomentum, rb.velocity.y);
-        }
-
-        if (lastGroundedTime > 0 && lastJumpTime > 0 && !isJumping)
-        {
-            rb.AddForce(Vector2.up * jumpHeight, ForceMode.Impulse);
-            lastGroundedTime = 0;
-            lastJumpTime = 0;
-            isJumping = true;
-        }
-
-        //Jump cut behaviour
-        if (Input.GetButtonUp("Jump") && rb.velocity.y > 0f)
-        {
-            rb.velocity = new Vector2(rb.velocity.x, rb.velocity.y * jumpCutMultiplier);
         }
 
         Flip();
@@ -91,6 +65,40 @@ public class Movement : MonoBehaviour
 
     private void FixedUpdate()
     {
+        #region Gravity related stuff
+
+        float actualGravity = rb.velocity.y < 0 ? (globalGravity * gravityScale * fallGravityMultiplier) : (globalGravity * gravityScale); //Gravity is higher when falling 
+        rb.AddForce(actualGravity * Vector3.up, ForceMode.Acceleration);
+
+        #endregion
+
+        #region Ground pound behaviour
+        if (!isGroundPounding && !isGrounded() && Input.GetKey(KeyCode.S))
+        {
+            rb.AddForce(Vector2.down * groundPoundForce, ForceMode.Impulse);
+            isGroundPounding = true;
+            rb.velocity = new Vector2(rb.velocity.x * groundPoundHorizontalMomentum, rb.velocity.y);
+        }
+        #endregion
+
+        #region Jump behaviour
+        if (lastGroundedTime > 0 && lastJumpTime > 0 && !isJumping)
+        {   
+            rb.velocity = new Vector3(rb.velocity.x, 0 , 0);
+            rb.AddForce(Vector2.up * jumpHeight, ForceMode.Impulse);
+            lastGroundedTime = 0;
+            lastJumpTime = 0;
+            isJumping = true;
+        }
+        #endregion
+
+        #region Jump cut behaviour
+        if (Input.GetButtonUp("Jump") && rb.velocity.y > 0.0001f)
+        {
+            rb.velocity = new Vector3(rb.velocity.x, rb.velocity.y * jumpCutMultiplier, 0);
+        }
+        #endregion
+
         //movement with forces allows for easier implementation of other platforming elements
         #region Horizontal Run 
 
@@ -119,28 +127,6 @@ public class Movement : MonoBehaviour
         }
 
         #endregion
-
-        #region Jump Gravity
-
-     //   if (rb.velocity.y < 0)
-        {
-     //       rb.gravityScale = gravityScale * fallGravityMultiplier;
-
-     //       rb.AddForce(movement * Vector3.down);
-        }
-
-        #endregion
-
-        #region Fall speed clamping
-        if (!isGrounded())
-        {
-            float targetSpeedG = globalGravity * maxFallingSpeed;
-
-            float speedDiffG = targetSpeedG - rb.velocity.y;
-
-            rb.AddForce(speedDiffG * Vector3.down);
-        }
-        #endregion
     }
 
     //This function flips the x scale to save on the amount of work spent on the left side animations or sprites
@@ -159,7 +145,7 @@ public class Movement : MonoBehaviour
     private bool isGrounded()
     {
         bool isTouchingGround = false;
-        Collider[] collisions = Physics.OverlapSphere(groundCheck.position, 0.2f, groundLayer);
+        Collider[] collisions = Physics.OverlapSphere(groundCheck.position, 0.1f, groundLayer);
         foreach (var collision in collisions)
         {
             if (collision.gameObject.layer == 6)

@@ -525,7 +525,7 @@ Transform:
   m_GameObject: {fileID: 1228940118}
   m_LocalRotation: {x: 0, y: 0.7071068, z: 0.7071068, w: 0}
   m_LocalPosition: {x: 0, y: 0, z: -0.175}
-  m_LocalScale: {x: 3, y: 3, z: 3}
+  m_LocalScale: {x: 2.5, y: 2.5, z: 2.5}
   m_ConstrainProportionsScale: 1
   m_Children: []
   m_Father: {fileID: 1979884598}
@@ -953,19 +953,19 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   moveSpeed: 8
-  acceleration: 5
-  decceleration: 20
-  velPower: 0.9
-  frictionAmount: 0.2
+  acceleration: 6
+  decceleration: 16
+  velPower: 1
+  frictionAmount: 1
   jumpHeight: 9
-  jumpCutMultiplier: 0.25
-  jumpBufferTime: 0.15
+  jumpCutMultiplier: 0.1
+  jumpBufferTime: 0.1
   jumpCoyoteTime: 0.15
-  gravityScale: 1
-  maxFallingSpeed: -2.5
-  fallGravityMultiplier: 3
+  gravityScale: 1.25
+  maxFallingSpeed: 2.5
+  fallGravityMultiplier: 2
   groundPoundForce: 12
-  groundPoundHorizontalMomentum: 0.2
+  groundPoundHorizontalMomentum: 1
   rb: {fileID: 1979884607}
   groundCheck: {fileID: 1430772326}
   groundLayer:
@@ -981,10 +981,10 @@ CapsuleCollider:
   m_Material: {fileID: 13400000, guid: 6633b315e10364545b6419c82f360de3, type: 2}
   m_IsTrigger: 0
   m_Enabled: 1
-  m_Radius: 0.26117715
-  m_Height: 1.493016
+  m_Radius: 0.22127995
+  m_Height: 1.2273324
   m_Direction: 1
-  m_Center: {x: 0.000000029802322, y: 0.7447878, z: 0}
+  m_Center: {x: 0, y: 0.61, z: 0}
 --- !u!54 &1979884607
 Rigidbody:
   m_ObjectHideFlags: 0
@@ -994,13 +994,13 @@ Rigidbody:
   m_GameObject: {fileID: 1979884594}
   serializedVersion: 2
   m_Mass: 1
-  m_Drag: 0
+  m_Drag: 1
   m_AngularDrag: 0.05
   m_UseGravity: 0
   m_IsKinematic: 0
   m_Interpolate: 1
   m_Constraints: 72
-  m_CollisionDetection: 1
+  m_CollisionDetection: 2
 --- !u!1 &1981135614
 GameObject:
   m_ObjectHideFlags: 0
