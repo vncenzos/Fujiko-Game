@@ -64,10 +64,12 @@ public class Movement : MonoBehaviour
             }
             else{
                 ps_puffs.Stop();
+                ps_puffs.Clear();
             }
         }
         else {
             ps_puffs.Stop();
+            ps_puffs.Clear();
         }
 
         //Horizontal axis input 
