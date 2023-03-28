@@ -5,6 +5,7 @@ using UnityEngine;
 public class Movement : MonoBehaviour
 {
 
+    //public vars
     private float horizontal;
     public float moveSpeed;
     public float acceleration;
@@ -20,12 +21,17 @@ public class Movement : MonoBehaviour
     public float fallGravityMultiplier;
     public float groundPoundForce;
     public float groundPoundHorizontalMomentum;
+
+    //private shit
     private bool isFacingRight;
     private float lastGroundedTime;
     private float lastJumpTime;
     private bool isJumping;
     private bool isGroundPounding;
     private float globalGravity = -9.81f;
+    private float sackWeight;
+
+    //serialized fields
     [SerializeField] private Rigidbody rb;
     [SerializeField] private Transform groundCheck;
     [SerializeField] private LayerMask groundLayer;
@@ -33,7 +39,7 @@ public class Movement : MonoBehaviour
     // Start is called before the first frame update
     void Start()
     {
-
+        sackWeight = 1;
     }
 
     // Update is called once per frame
@@ -85,7 +91,7 @@ public class Movement : MonoBehaviour
         if (lastGroundedTime > 0 && lastJumpTime > 0 && !isJumping)
         {   
             rb.velocity = new Vector3(rb.velocity.x, 0 , 0);
-            rb.AddForce(Vector2.up * jumpHeight, ForceMode.Impulse);
+            rb.AddForce(Vector2.up * jumpHeight * sackWeight, ForceMode.Impulse);
             lastGroundedTime = 0;
             lastJumpTime = 0;
             isJumping = true;
@@ -108,7 +114,7 @@ public class Movement : MonoBehaviour
 
         float accelRate = (Mathf.Abs(targetSpeed) > 0.01f) ? acceleration : decceleration;
 
-        float movement = Mathf.Pow(Mathf.Abs(speedDiff) * accelRate, velPower) * Mathf.Sign(speedDiff);
+        float movement = Mathf.Pow(Mathf.Abs(speedDiff) * accelRate, velPower * sackWeight) * Mathf.Sign(speedDiff);
 
         rb.AddForce(movement * Vector2.right);
 
