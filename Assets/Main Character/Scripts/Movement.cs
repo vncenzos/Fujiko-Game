@@ -86,7 +86,6 @@ public class Movement : MonoBehaviour
     {
         #region Gravity related stuff
         float actualGravity = rb.velocity.y < 0 ? (globalGravity * gravityScale * fallGravityMultiplier) : (globalGravity * gravityScale); //Gravity is higher when falling 
-        print(actualGravity);
         rb.AddForce(actualGravity * Vector3.up, ForceMode.Acceleration);
 
         #endregion
