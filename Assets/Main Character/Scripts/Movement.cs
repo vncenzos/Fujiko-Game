@@ -12,13 +12,16 @@ public class Movement : MonoBehaviour
     public float decceleration;
     public float velPower;
     public float frictionAmount;
+    [Space]
     public float jumpHeight;
     public float jumpCutMultiplier;
     public float jumpBufferTime;
     public float jumpCoyoteTime;
+    [Space]
     public float gravityScale;
     public float maxFallingSpeed;
     public float fallGravityMultiplier;
+    [Space]
     public float groundPoundForce;
     public float groundPoundHorizontalMomentum;
 
@@ -35,6 +38,7 @@ public class Movement : MonoBehaviour
     [SerializeField] private Rigidbody rb;
     [SerializeField] private Transform groundCheck;
     [SerializeField] private LayerMask groundLayer;
+    [SerializeField] private ParticleSystem ps_puffs;
 
     // Start is called before the first frame update
     void Start()
@@ -55,6 +59,15 @@ public class Movement : MonoBehaviour
             lastGroundedTime = jumpCoyoteTime;
             isJumping = false;
             isGroundPounding = false;
+            if(Mathf.Abs(horizontal) > 0.1f){
+                            ps_puffs.Play();
+            }
+            else{
+                ps_puffs.Stop();
+            }
+        }
+        else {
+            ps_puffs.Stop();
         }
 
         //Horizontal axis input 
@@ -72,8 +85,8 @@ public class Movement : MonoBehaviour
     private void FixedUpdate()
     {
         #region Gravity related stuff
-
         float actualGravity = rb.velocity.y < 0 ? (globalGravity * gravityScale * fallGravityMultiplier) : (globalGravity * gravityScale); //Gravity is higher when falling 
+        print(actualGravity);
         rb.AddForce(actualGravity * Vector3.up, ForceMode.Acceleration);
 
         #endregion
@@ -99,7 +112,7 @@ public class Movement : MonoBehaviour
         #endregion
 
         #region Jump cut behaviour
-        if (Input.GetButtonUp("Jump") && rb.velocity.y > 0.0001f)
+        if (!Input.GetButton("Jump") && rb.velocity.y > 0.0001f)
         {
             rb.velocity = new Vector3(rb.velocity.x, rb.velocity.y * jumpCutMultiplier, 0);
         }
