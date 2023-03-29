@@ -39,6 +39,7 @@ public class Movement : MonoBehaviour
     [SerializeField] private Transform groundCheck;
     [SerializeField] private LayerMask groundLayer;
     [SerializeField] private ParticleSystem ps_puffs;
+    [SerializeField] private Animator animator;
 
     // Start is called before the first frame update
     void Start()
@@ -74,6 +75,7 @@ public class Movement : MonoBehaviour
 
         //Horizontal axis input 
         horizontal = Input.GetAxisRaw("Horizontal");
+        animator.SetFloat("Movement", Mathf.Abs(horizontal));
 
         //Jump buffer input
         if (Input.GetButtonDown("Jump"))
