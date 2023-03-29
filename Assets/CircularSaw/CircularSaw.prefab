@@ -133,7 +133,7 @@ MonoBehaviour:
     serializedVersion: 2
     m_Bits: 8
   damage: 1
-  knockback: 20
+  knockback: 10
 --- !u!114 &5267410869801111905
 MonoBehaviour:
   m_ObjectHideFlags: 0
