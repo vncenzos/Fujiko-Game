@@ -7,6 +7,8 @@ public class HealthSystem : MonoBehaviour
     public int maxHealth;
     int health;
     bool canBeDamaged = true;
+    bool canBeKnockedback= true;
+
     [SerializeField] Rigidbody rb;
     [SerializeField] Transform respawnPoint;
     // Start is called before the first frame update
@@ -43,13 +45,24 @@ public class HealthSystem : MonoBehaviour
 
     public void onKnockback(float knockbackForce)
     {
+        if (canBeKnockedback)
+        {
+            canBeKnockedback = false;
             Vector3 knockbackVector = knockbackForce * rb.transform.localScale;
-            rb.AddForce(knockbackVector, ForceMode.Impulse);
+            rb.AddForce(knockbackVector * 10, ForceMode.Impulse);
+            StartCoroutine(knockbackCooldown());
+        }
     }
 
     IEnumerator damageCooldown()
     {
         yield return new WaitForSeconds(0.5f);
         canBeDamaged = true;
+    }
+
+    IEnumerator knockbackCooldown()
+    {
+        yield return new WaitForSeconds(0.5f);
+        canBeKnockedback = true;
     }
 }
