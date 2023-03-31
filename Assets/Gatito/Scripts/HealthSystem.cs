@@ -48,8 +48,8 @@ public class HealthSystem : MonoBehaviour
         if (canBeKnockedback)
         {
             canBeKnockedback = false;
-            Vector3 knockbackVector = knockbackForce * rb.transform.localScale;
-            rb.AddForce(knockbackVector * 10, ForceMode.Impulse);
+            Vector3 knockbackVector = new Vector3(rb.transform.localScale.x * knockbackForce * 10 , 0 , 0);
+            rb.AddForce(knockbackVector, ForceMode.Impulse);
             StartCoroutine(knockbackCooldown());
         }
     }
