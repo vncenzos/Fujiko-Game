@@ -146,8 +146,26 @@ public class Movement : MonoBehaviour
             amount *= Mathf.Sign(rb.velocity.x);
 
             rb.AddForce(Vector3.right * -amount, ForceMode.Impulse);
+
         }
 
+        #endregion
+
+        #region DirectionChangeDetector
+
+
+        if (horizontal != 0 && rb.velocity.x != 0) 
+        {
+        if (Mathf.Sign(horizontal) != Mathf.Sign(rb.velocity.x))
+        {
+            animator.SetBool("RapidDirectionChange", true);
+        }
+
+        if (Mathf.Sign(horizontal) == Mathf.Sign(rb.velocity.x))
+        {
+            animator.SetBool("RapidDirectionChange", false);
+        }
+        }
         #endregion
     }
 

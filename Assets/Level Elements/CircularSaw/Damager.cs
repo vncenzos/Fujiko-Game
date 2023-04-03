@@ -4,7 +4,7 @@ using UnityEngine;
 
 public class Damager : MonoBehaviour
 {
-    [SerializeField] private Collider collider;
+    [SerializeField] new private Collider collider;
     [SerializeField] private LayerMask layerMask;
     [SerializeField] public int damage;
     [SerializeField] public float knockback;
