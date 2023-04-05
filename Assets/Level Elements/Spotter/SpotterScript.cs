@@ -5,6 +5,7 @@ using UnityEngine;
 public class SpotterScript : MonoBehaviour
 {
     private Transform playerTransform;
+
     void Start()
     {
         
@@ -13,7 +14,6 @@ public class SpotterScript : MonoBehaviour
     
     void Update()
     {
-                    gameObject.transform.LookAt(playerTransform);
 
     }
 
